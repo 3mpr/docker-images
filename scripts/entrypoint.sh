@@ -2,7 +2,11 @@
 
 cd /home/www-data
 
+echo -en "\nStarting laravel container...\n"
+
 if [ ! "$(ls -A /home/www-data/app)" ]; then
+
+    echo -en "\nLaravel installation not detected, installing...\n"
 
     composer create-project --prefer-dist laravel/laravel tmp
 
@@ -14,6 +18,8 @@ if [ ! "$(ls -A /home/www-data/app)" ]; then
 
     cd app
     npm install
+
+    echo -en "\nDone.\n"
 
 fi
 
