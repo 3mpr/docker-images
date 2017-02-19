@@ -1,9 +1,10 @@
 FROM alpine:latest
-MAINTAINER Florian Indot <florian.indot@gmail.com>
+MAINTAINER 3mpr <florian.indot@gmail.com>
 
 ENV DUMB_INIT_VERSION 1.2.0
 
-RUN apk add --update --no-cache --virtual .ssl libressl
+RUN apk add --update --no-cache --virtual .ssl libressl \
+ && apk add --update --no-cache su-exec
 
 RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_${DUMB_INIT_VERSION}_amd64 \
  && chmod +x /usr/local/bin/dumb-init

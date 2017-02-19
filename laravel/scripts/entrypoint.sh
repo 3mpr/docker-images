@@ -40,7 +40,7 @@ esac
 cd $APP_DIR
 su www-data
 
-php artisan serve --host 0.0.0.0 > $LOG_DIR/runtime.log 2>&1 &
-npm run $MIX_ENV
+npm run $MIX_ENV >> $LOG_DIR/runtime.log 2>&1 &
+php artisan serve --host 0.0.0.0
 
 exit $?

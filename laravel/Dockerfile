@@ -1,5 +1,5 @@
 FROM 3mpr/php
-MAINTAINER Florian Indot <florian.indot@gmail.com>
+MAINTAINER 3mpr <florian.indot@gmail.com>
 
 # Alpine Dependencies & Update ----------------------------------------------- #
 RUN sed -i 's/v3.4/v3.5/g' /etc/apk/repositories \

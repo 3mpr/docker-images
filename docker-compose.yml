@@ -1,0 +1,35 @@
+---
+
+version: '2'
+
+services:
+
+    baseimage:
+        build: ./baseimage
+        image: 3mpr/baseimage:0.1
+
+
+    php:
+        build: ./php
+        image: 3mpr/php:latest
+
+
+    laravel-dev:
+        build: ./laravel
+        image: 3mpr/laravel:dev-5.4
+        container_name: laravel-dev
+        restart: unless-stopped
+        ports:
+            - 8000:8000
+            - 8080:8080
+        volumes:
+            - $HOME/laravel-dev
+        environment:
+            MIX_ENV: 'hot'
+
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: unless-stopped
+        ports:
+            - 3600:3600
