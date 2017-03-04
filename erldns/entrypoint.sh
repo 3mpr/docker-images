@@ -11,12 +11,3 @@ fi
 
 cd /tmp/erl-dns/
 erl -config ${CONF_PATH}/erldns.config -pa ebin deps/**/ebin -s erldns
-
-inets:start().
-crypto:start().
-lager:start().
-application:start(base32).
-application:start(dns).
-application:start(jsx).
-ssl:start().
-mnesia:start().

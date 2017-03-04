@@ -24,8 +24,8 @@ ENV ERL_DEPS \
     erlang-observer
 
 RUN set -x \
-	&& addgroup -S named \
-	&& adduser -D -S -G named named
+ && addgroup -S named \
+ && adduser -D -S -G named named
 
 RUN apk add --update --no-cache --virtual build_deps $BUILD_DEPS \
  && apk add --update --no-cache $ERL_DEPS
@@ -38,6 +38,7 @@ RUN apk del build_deps
 
 USER named
 WORKDIR /tmp/erl-dns
+VOLUME ["/tmp/erl-dns/conf"]
 EXPOSE 8053
 
 ADD ["entrypoint.sh", "/tmp/erl-dns/"]
