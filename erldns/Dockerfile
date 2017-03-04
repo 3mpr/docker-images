@@ -32,7 +32,9 @@ RUN apk add --update --no-cache --virtual build_deps $BUILD_DEPS \
 
 RUN git clone https://github.com/aetrion/erl-dns.git \
  && cd erl-dns \
- && sh build.sh
+ && sh build.sh \
+ && chown -R named:named /tmp/erl-dns \
+ && chmod -R 766 /tmp/erl-dns
 
 RUN apk del build_deps
 

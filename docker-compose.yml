@@ -12,11 +12,14 @@ services:
         build: ./erldns
         image: 3mpr/erldns:latest
         container_name: erldns
-        restart: unless-stopped
+        hostname: erldns
+        restart: on-failure
         ports:
             - "53:8053/udp"
         volumes:
-            - $HOME/erldns
+            - ${HOME}/Documents/Docker/erldns:/tmp/erl-dns/conf
+        stdin_open: true
+        tty: true
 
     php:
         build: ./php
@@ -24,15 +27,15 @@ services:
 
 
     laravel-dev:
-        build: ./laravel
-        image: 3mpr/laravel:dev-5.4
+        build: ./laravel-dev
+        image: 3mpr/laravel-dev:5.4
         container_name: laravel-dev
         restart: unless-stopped
         ports:
             - 8000:8000
             - 8080:8080
         volumes:
-            - $HOME/laravel-dev
+            - ${HOME}/Documents/Docker/laravel-dev:/home/www-data/app
         environment:
             MIX_ENV: 'hot'
 

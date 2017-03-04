@@ -2,7 +2,7 @@
 
 CONF_PATH="/tmp/erl-dns/conf"
 
-if [ ! -d ${CONF_PATH} ]; then
+if [[ ! -d ${CONF_PATH} || ! "$(ls -A ${CONF_PATH})" ]]; then
     mkdir -p ${CONF_PATH}/priv
     mv /tmp/erl-dns/erldns.config.example ${CONF_PATH}/
     cp ${CONF_PATH}/erldns.config.example ${CONF_PATH}/erldns.config
