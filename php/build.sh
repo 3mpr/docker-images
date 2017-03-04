@@ -8,7 +8,7 @@ rm -rf php
 
 # Updates base Docker file to use my baseimage and replaces alpine:3.4 openssl
 # dependency with libressl, used since 3.5
-sed -i 's/FROM alpine:[0-9]\?.[0-9]\?/FROM 3mpr\/baseimage:latest/' Dockerfile
+sed -i 's/FROM alpine:[0-9]\?.[0-9]\?/FROM 3mpr\/baseimage:0.1/' Dockerfile
 sed -i 's/openssl/libressl/g' Dockerfile
 sed -i 's/--with-libressl/--with-openssl/g' Dockerfile # Correction of the last sed
 sed -i 's/#!\/bin\/sh/#!\/usr\/local\/bin\/dumb-init sh/' docker-php-entrypoint

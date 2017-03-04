@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM 3mpr/baseimage:latest
+FROM 3mpr/baseimage:0.1
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
