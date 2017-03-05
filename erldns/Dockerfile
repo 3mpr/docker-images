@@ -34,7 +34,7 @@ RUN git clone https://github.com/aetrion/erl-dns.git \
  && cd erl-dns \
  && sh build.sh \
  && chown -R named:named /tmp/erl-dns \
- && chmod -R 766 /tmp/erl-dns
+ && chmod -R 754 /tmp/erl-dns
 
 RUN apk del build_deps
 
@@ -44,4 +44,4 @@ VOLUME ["/tmp/erl-dns/conf"]
 EXPOSE 8053
 
 ADD ["entrypoint.sh", "/tmp/erl-dns/"]
-ENTRYPOINT ["sh", "entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/dumb-init", "sh", "entrypoint.sh"]

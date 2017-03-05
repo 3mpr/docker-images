@@ -8,6 +8,7 @@ services:
         build: ./baseimage
         image: 3mpr/baseimage:0.1
 
+
     erldns:
         build: ./erldns
         image: 3mpr/erldns:latest
@@ -18,6 +19,17 @@ services:
             - "53:8053/udp"
         volumes:
             - ${HOME}/Documents/Docker/erldns:/tmp/erl-dns/conf
+        stdin_open: true
+        tty: true
+
+    easyrsa:
+        build: ./easyrsa
+        image: 3mpr/easyrsa:latest
+        container_name: easyrsa
+        hostname: easyrsa
+        restart: on-failure
+        volumes:
+            - easyrsa-pki-data:/tmp/EasyRSA-3.0.1/pki
         stdin_open: true
         tty: true
 
@@ -46,3 +58,6 @@ services:
         restart: unless-stopped
         ports:
             - 3600:3600
+
+volumes:
+    easyrsa-pki-data:
