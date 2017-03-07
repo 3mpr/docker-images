@@ -10,6 +10,11 @@ services:
             dockerfile: Dockerfile-Alpine
         image: 3mpr/baseimage:latest
 
+    baseimage-glibc:
+        build:
+            context: ./baseimage
+            dockerfile: Dockerfile-Alpine-glibc
+        image: 3mpr/baseimage:glibc-latest
 
     baseimage-debian:
         build:
@@ -23,9 +28,14 @@ services:
         image: 3mpr/java:latest
 
 
+    golang:
+        build: ./golang
+        image: 3mpr/golang:latestZ
+
+
     ejbca:
         build: ./ejbca
-        image: 3mpt/ejbca:latest
+        image: 3mpr/ejbca:latest
         hostname: ejbca
 
 
@@ -42,6 +52,7 @@ services:
         stdin_open: true
         tty: true
 
+
     easyrsa:
         build: ./easyrsa
         image: 3mpr/easyrsa:latest
@@ -52,6 +63,7 @@ services:
             - easyrsa-pki-data:/tmp/EasyRSA-3.0.1/pki
         stdin_open: true
         tty: true
+
 
     php:
         build: ./php

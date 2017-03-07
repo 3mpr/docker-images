@@ -1,4 +1,4 @@
-FROM 3mpr/baseimage:0.1
+FROM 3mpr/baseimage:glibc-latest
 MAINTAINER Florian Indot <florian.indot@gmail.com>
 
 ENV JAVA_MAJOR_VERSION="8" \
