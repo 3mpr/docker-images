@@ -1,0 +1,16 @@
+FROM debian:jessie-slim
+MAINTAINER Florian Indot <florian.indot@gmail.com>
+
+ENV DUMB_INIT_VERSION 1.2.0
+
+ENV DEPS \
+    wget
+
+RUN apt-get update \
+ && apt-get install -y wget \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64.deb \
+ && dpkg -i dumb-init_*.deb
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]

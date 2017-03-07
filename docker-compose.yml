@@ -5,8 +5,28 @@ version: '2'
 services:
 
     baseimage:
-        build: ./baseimage
-        image: 3mpr/baseimage:0.1
+        build:
+            context: ./baseimage
+            dockerfile: Dockerfile-Alpine
+        image: 3mpr/baseimage:latest
+
+
+    baseimage-debian:
+        build:
+            context: ./baseimage
+            dockerfile: Dockerfile-Debian
+        image: 3mpr/baseimage:debian-latest
+
+
+    java:
+        build: ./java
+        image: 3mpr/java:latest
+
+
+    ejbca:
+        build: ./ejbca
+        image: 3mpt/ejbca:latest
+        hostname: ejbca
 
 
     erldns:
