@@ -1,0 +1,8 @@
+FROM 3mpr/baseimage:alpine-glibc
+MAINTAINER 3mpr <florian.indot@gmail.com>
+
+ARG PYTHON_PACKAGE="python2"
+
+RUN apk add --update --no-cache ${PYTHON_PACKAGE}
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
