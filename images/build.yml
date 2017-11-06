@@ -49,6 +49,9 @@ services:
         build: ./php
         image: 3mpr/php:latest
 
+    nginx-php:
+        build: ./nginx-boilerplate
+        image: 3mpr/nginx:php
 
     laravel-dev:
         build: ./laravel-dev
