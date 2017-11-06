@@ -1,0 +1,77 @@
+version: '2'
+
+# ============================================================================
+#                                  SERVICES                                   
+# ============================================================================
+
+services:
+
+  router:
+    image: 3mpr/nginx-gestalt:latest
+    container_name: router
+    hostname: router
+    volumes:
+      - ${RUNTIME}/router/etc:/etc/nginx
+      - ${RUNTIME}/router/log:/var/log/nginx
+    networks:
+      authority:
+        ipv4_address: 10.0.254.225
+      san:
+        ipv4_address: 10.0.0.1
+      dmz:
+        ipv4_address: 10.0.10.1
+      lightyears:
+        ipv4_address: 23.20.2.1
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
+# ============================================================================
+
+
+# ============================================================================
+#                                  NETWORKS                                                                    
+# ============================================================================
+
+networks:
+
+  authority:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.254.224/27
+          ip_range: 10.0.254.224/27
+          gateway: 10.0.254.254
+
+  san:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+          ip_range: 10.0.0.0/24
+          gateway: 10.0.0.126
+    internal: true
+
+  dmz:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.10.0/24
+          ip_range: 10.0.10.0/24
+          gateway: 10.0.10.254
+    internal: true
+
+  lightyears:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 23.20.2.0/24
+          ip_range: 23.20.2.0/24
+          gateway: 23.20.2.254
+
+# ============================================================================

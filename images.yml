@@ -4,6 +4,12 @@ version: '2'
 
 services:
 
+    gestalt:
+        build:
+            context: ./gestalt
+            dockerfile: Dockerfile
+        image: 3mpr/nginx-gestalt:latest
+
     baseimage:
         build:
             context: ./baseimage
@@ -22,22 +28,9 @@ services:
             dockerfile: Dockerfile-Debian
         image: 3mpr/baseimage:debian-latest
 
-
     java:
         build: ./java
         image: 3mpr/java:latest
-
-
-    golang:
-        build: ./golang
-        image: 3mpr/golang:latestZ
-
-
-    ejbca:
-        build: ./ejbca
-        image: 3mpr/ejbca:latest
-        hostname: ejbca
-
 
     erldns:
         build: ./erldns
@@ -51,19 +44,6 @@ services:
             - ${HOME}/Documents/Docker/erldns:/tmp/erl-dns/conf
         stdin_open: true
         tty: true
-
-
-    easyrsa:
-        build: ./easyrsa
-        image: 3mpr/easyrsa:latest
-        container_name: easyrsa
-        hostname: easyrsa
-        restart: on-failure
-        volumes:
-            - easyrsa-pki-data:/tmp/EasyRSA-3.0.1/pki
-        stdin_open: true
-        tty: true
-
 
     php:
         build: ./php
@@ -90,6 +70,3 @@ services:
         restart: unless-stopped
         ports:
             - 3600:3600
-
-volumes:
-    easyrsa-pki-data:

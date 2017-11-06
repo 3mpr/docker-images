@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+cd /usr/src/gestalt
+uwsgi --ini gestalt.ini --wsgi-file wsgi.py > /var/log/nginx/uwsgi.log 2>&1 &

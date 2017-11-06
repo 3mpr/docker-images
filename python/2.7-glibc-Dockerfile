@@ -1,8 +1,9 @@
-FROM 3mpr/baseimage:alpine-glibc
+FROM python:2.7.14-alpine3.6
 MAINTAINER 3mpr <florian.indot@gmail.com>
 
-ARG PYTHON_PACKAGE="python2"
-
-RUN apk add --update --no-cache ${PYTHON_PACKAGE}
+RUN apk add --update --no-cache --virtual .ssl openssl \
+ && wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_${DUMB_INIT_VERSION}_amd64 \
+ && chmod +x /usr/local/bin/dumb-init
+ && apk del .ssl
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
