@@ -1,0 +1,8 @@
+FROM 3mpr/baseimage:alpine-glibc
+
+RUN apk add --update --no-cache python3 \
+ && mv /usr/bin/python3 /usr/bin/python \
+ && mv /usr/bin/pip3 /usr/bin/pip \
+ && pip install --upgrade pip
+
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
