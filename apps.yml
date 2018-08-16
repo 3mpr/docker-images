@@ -1,1 +1,239 @@
 version: '2'
+
+services:
+
+  # DMZ  
+  web-php:
+    image: 3mpr/nginx:php
+    container_name: web-php
+    hostname: web-php
+    volumes:
+      - ${RUNTIME}/web-php/etc:/etc/nginx
+      - ${RUNTIME}/web-php/log:/var/log/nginx
+      - ${RUNTIME}/web-php/www:/var/www
+    networks:
+      dmz:
+        ipv4_address: 10.0.10.16
+    restart: unless-stopped
+
+  consultations:
+    image: oragelac/django:mysql-libjpeg-0.1
+    container_name: consultations
+    hostname: consultations
+    volumes:
+      - ${RUNTIME}/consultations/src:/usr/src/app
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.22
+    environment:
+      MYSQL_HOST: 23.20.2.1
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+  
+  utopia:
+    image: oragelac/django:mysql-0.1
+    container_name: utopia 
+    hostname: utopia
+    volumes:
+      - ${RUNTIME}/utopia/src:/usr/src/app
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.18
+    environment:
+      MYSQL_HOST: 23.20.2.1
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  ucl:
+    image: 3mpr/ucl:latest
+    container_name: ucl
+    hostname: ucl
+    volumes:
+      - ${RUNTIME}/ucl:/home/node/app
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.20
+    environment:
+      NODE_ENV: development
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  ilanga:
+    image: 3mpr/ilanga:0.0.3
+    container_name: ilanga
+    hostname: ilanga
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.23
+    restart: unless-stopped
+
+  # SAN
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    volumes:
+      - ${RUNTIME}/mysql/etc:/etc/mysql
+      - ${RUNTIME}/mysql/var:/var/lib/mysql
+      - ${RUNTIME}/mysql/log:/var/log/mysql
+    environment:
+      MYSQL_USER: 'wt2'
+      MYSQL_PASSWORD: 'wt2'
+      MYSQL_DATABASE: 'wt2db'
+      MYSQL_ROOT_PASSWORD: 'waffles4love'
+    networks:
+      san:
+        ipv4_address: 10.0.0.16
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:10-alpine
+    container_name: postgres
+    hostname: postgres
+    volumes:
+      - ${RUNTIME}/postgresql/data:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: oscar
+      POSTGRES_USER: oscar
+      POSTGRES_PASSWORD: oscar
+      PG_DATA: /var/lib/postgresql/data/pgdata
+    networks:
+      san:
+        ipv4_address: 10.0.0.17
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    hostname: mongo
+    volumes:
+      - ${RUNTIME}/mongo/data:/data/db
+    networks:
+      san:
+        ipv4_address: 10.0.0.18
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    hostname: neo4j
+    volumes:
+      - ${RUNTIME}/neo4j/data:/data
+    networks:
+      san:
+        ipv4_address: 10.0.0.19
+    restart: unless-stopped
+
+  # VPN
+  tinc-vpn:
+    image: 3mpr/tinc:latest
+    container_name: tinc-vpn
+    hostname: tinc-vpn
+    volumes:
+      - ${RUNTIME}/tinc/etc:/etc/tinc
+      - ${RUNTIME}/tinc/log:/var/log
+      - /dev/net/tun:/dev/tun
+    networks:
+      vpn:
+        ipv4_address: 254.254.254.250
+    ports:
+      - 655:655
+      - 655:655/udp
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  # sandbox
+  teamspeak:
+    image: 3mpr/teamspeak:3.3.0
+    container_name: teamspeak
+    hostname: teamspeak
+    volumes:
+      - ${RUNTIME}/teamspeak/log:/var/log/teamspeak
+      - ${RUNTIME}/teamspeak/etc:/etc/teamspeak
+    ports:
+      - 9987:9987/udp
+      - 30033:30033
+      - 10011:10011
+      - 41144:41144
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.16
+    environment:
+      TS3SERVER_LICENSE: accept
+    restart: unless-stopped
+
+  sinusbot:
+    image: veltro/sinusbot
+    container_name: sinusbot
+    hostname: sinusbot
+    volumes:
+      - ${RUNTIME}/sinusbot/data:/sinusbot/data
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.17
+    restart: unless-stopped
+
+  aoedia:
+    image: 3mpr/aoedia:latest
+    container_name: aoedia
+    hostname: aoedia
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ${RUNTIME}/aoedia:/home/node/app
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.19
+    restart: unless-stopped
+
+  drone-server:
+    image: drone/drone:latest
+    container_name: drone-server
+    hostname: drone-server
+    environment:
+      - DRONE_OPEN=true
+      - DRONE_ADMIN=${DRONE_ADMIN}
+      - DRONE_HOST=${DRONE_HOST}
+      - DRONE_GITHUB=true
+      - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
+      - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
+      - DRONE_SECRET=${DRONE_SECRET}
+    volumes:
+      - ${RUNTIME}/drone/server:/var/lib/drone
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.20
+    restart: unless-stopped
+
+  drone-agent:
+    image: drone/agent:latest
+    container_name: drone-agent
+    hostname: drone-agent
+    command: agent
+    environment:
+      - DRONE_SERVER=23.20.2.20:9000
+      - DRONE_SECRET=${DRONE_SECRET}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      sandbox:
+        ipv4_address: 23.20.2.21
+    restart: unless-stopped
+    depends_on: [ drone-server ]
+
+volumes:
+
+  oscar:
+    driver: local-persist

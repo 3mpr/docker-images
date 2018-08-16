@@ -13,6 +13,7 @@ services:
     volumes:
       - ${RUNTIME}/router/etc:/etc/nginx
       - ${RUNTIME}/router/log:/var/log/nginx
+      - ${RUNTIME}/router/src:/usr/src/gestalt
     networks:
       authority:
         ipv4_address: 10.0.254.225
@@ -20,11 +21,15 @@ services:
         ipv4_address: 10.0.0.1
       dmz:
         ipv4_address: 10.0.10.1
-      lightyears:
+      vpn:
+        ipv4_address: 254.254.254.249
+      sandbox:
         ipv4_address: 23.20.2.1
     ports:
       - 80:80
       - 443:443
+      - 3306:3306
+      - 27017:27017
     restart: unless-stopped
 
 # ============================================================================
@@ -63,9 +68,17 @@ networks:
         - subnet: 10.0.10.0/24
           ip_range: 10.0.10.0/24
           gateway: 10.0.10.254
-    internal: true
 
-  lightyears:
+  vpn:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 254.254.254.248/29
+          ip_range: 254.254.254.248/29
+          gateway: 254.254.254.254
+
+  sandbox:
     driver: bridge
     ipam:
       driver: default
@@ -73,5 +86,5 @@ networks:
         - subnet: 23.20.2.0/24
           ip_range: 23.20.2.0/24
           gateway: 23.20.2.254
-
+  
 # ============================================================================
