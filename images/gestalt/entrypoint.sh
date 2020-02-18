@@ -15,7 +15,7 @@ function https {
 }
 
 function initialized {
-  if [ -f /run/gestalt/.initialized ]; then
+  if [ -f /.initialized ]; then
     return 0
   fi
 
@@ -30,11 +30,9 @@ function init {
 
   GESTALT_CONF="${NGINX_DIR}/disabled/${GESTALT_HOST_FILE}"
 
-  sed -i "s/target_hostname/${GESTALT_HOSTNAME:-\$hostname localhost}/g" ${GESTALT_CONF}
-  mv ${GESTALT_CONF} /etc/nginx/conf.d/${GESTALT_FILE}
   touch /var/log/nginx/uwsgi.log && chown gestalt:gestalt /var/log/nginx/uwsgi.log
 
-  touch /run/gestalt/.initialized
+  touch /.initialized
   echo "Done."
 }
 
@@ -46,14 +44,6 @@ function nginx_dir {
   return 1
 }
 
-
-if ! initialized; then
-  init
-fi
-
-if ! nginx_dir; then
-  rsync -r /tmp/nginx_backup/* /etc/nginx
-fi
 
 echo "Starting gestalt daemon..."
 su-exec gestalt /usr/local/bin/gestaltd

@@ -10,8 +10,7 @@ init() {
 
   python manage.py makemigrations
   python manage.py migrate
-  python manage.py createsuperuser
-
+    
   touch /.init
 
   cd - || exit 1
@@ -22,4 +21,4 @@ init() {
 
 chown -R django:django "${WORKDIR}"
 cd "${WORKDIR}" || exit 1
-python manage.py runserver 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000 --insecure

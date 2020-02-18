@@ -1,0 +1,22 @@
+FROM 3mpr/python:3-glibc
+MAINTAINER oragelac <calegaroantoine@gmail.com>
+
+WORKDIR /tmp
+
+ENV DEPS="mysql mysql-dev libjpeg-turbo-dev gcc python3-dev glibc musl-dev" \
+    DEV_DEPS="python3"
+
+RUN set -ex \
+ && apk add --update --no-cache ${DEPS}  \
+ && apk add --update --no-cache --virtual .deps ${DEV_DEPS} \
+ && pip install --upgrade django mysqlclient \
+ && mkdir -p /usr/src/app && addgroup django \
+ && adduser -D -g "" -G django -h /usr/src/app -s /sbin/nologin django \
+ && chown -R django:django /usr/src/app \
+ && apk del .deps
+
+COPY ["entrypoint.sh", "/"]
+VOLUME /usr/src/app
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["/entrypoint.sh"]

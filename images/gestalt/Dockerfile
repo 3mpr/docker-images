@@ -1,13 +1,14 @@
 FROM 3mpr/python:3
 
 ENV BUILD_DEPS="git alpine-sdk python-dev linux-headers"
+ENV DEPS="nginx rsync shadow su-exec nginx-mod-stream"
 
 COPY ["gestalt", "/usr/src/gestalt"]
 COPY ["gestaltd", "/usr/local/bin/"]
 
 
 RUN apk add --update --no-cache --virtual .build-deps ${BUILD_DEPS} \
- && apk add --update nginx rsync shadow su-exec \
+ && apk add --update ${DEPS} \
  && pip install --upgrade flask uwsgi
 
 RUN addgroup gestalt \

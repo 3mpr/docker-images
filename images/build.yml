@@ -38,22 +38,21 @@ services:
             dockerfile: 3-Dockerfile
         image: 3mpr/python:3
 
+    python-glibc-2:
+        build:
+            context: ./python
+            dockerfile: 2.7-glibc-Dockerfile
+        image: 3mpr/python:2.7-glibc
+
+    web2py:
+        build:
+            context: ./web2py
+            dockerfile: Dockerfile
+        image: 3mpr/web2py:0.1
+
     erldns:
         build: ./erldns
         image: 3mpr/erldns:latest
-        container_name: erldns
-        hostname: erldns
-        restart: on-failure
-        ports:
-            - "53:8053/udp"
-        volumes:
-            - ${HOME}/Documents/Docker/erldns:/tmp/erl-dns/conf
-        stdin_open: true
-        tty: true
-
-    oscar:
-      build: ./oscar
-      image: 3mpr/oscar:latest
 
     php:
         build: ./php
@@ -66,22 +65,6 @@ services:
     laravel-dev:
         build: ./laravel-dev
         image: 3mpr/laravel-dev:5.4
-        container_name: laravel-dev
-        restart: unless-stopped
-        ports:
-            - 8000:8000
-            - 8080:8080
-        volumes:
-            - ${HOME}/Documents/Docker/laravel-dev:/home/www-data/app
-        environment:
-            MIX_ENV: 'hot'
-
-    mysql:
-        image: mysql:latest
-        container_name: mysql
-        restart: unless-stopped
-        ports:
-            - 3600:3600
 
     tinc:
         build: ./tinc
@@ -97,4 +80,4 @@ services:
 
     teamspeak:
         build: ./docker-teamspeak
-        image: 3mpr/teamspeak:3.3.0
+        image: 3mpr/teamspeak:3.11.0

@@ -13,7 +13,7 @@ ENV DEPS \
 RUN apk add --update --no-cache --virtual deps $DEPS
 
 RUN set -x \
- && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
+ && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_MAJOR_VERSION}.${GLIBC_MINOR_VERSION}-${GLIBC_RELEASE}/${GLIBC_PACKAGE}.apk \
  && apk add ${GLIBC_PACKAGE}.apk
 
