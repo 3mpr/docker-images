@@ -4,8 +4,8 @@
 # see https://github.com/shadowsocks/shadowsocks-libev/tree/master/docker/alpine
 #
 
-FROM 3mpr/baseimage:latest
-MAINTAINER 3mpr <florian.indot@gmail.com>
+FROM findot/baseimage:latest
+MAINTAINER findot <florian.indot@gmail.com>
 
 ARG SS_VER=3.0.8
 ARG SS_URL=https://github.com/shadowsocks/shadowsocks-libev/releases/download/v$SS_VER/shadowsocks-libev-$SS_VER.tar.gz
@@ -21,17 +21,17 @@ ENV ARGS=
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps \
-                                autoconf \
-                                build-base \
-                                curl \
-                                libev-dev \
-                                libtool \
-                                linux-headers \
-                                libsodium-dev \
-                                mbedtls-dev \
-                                pcre-dev \
-                                tar \
-                                udns-dev && \
+    autoconf \
+    build-base \
+    curl \
+    libev-dev \
+    libtool \
+    linux-headers \
+    libsodium-dev \
+    mbedtls-dev \
+    pcre-dev \
+    tar \
+    udns-dev && \
     cd /tmp && \
     curl -sSL $SS_URL | tar xz --strip 1 && \
     ./configure --prefix=/usr --disable-documentation && \
@@ -39,10 +39,10 @@ RUN set -ex && \
     cd .. && \
 
     runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/ss-* \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | xargs -r apk info --installed \
-            | sort -u \
+    scanelf --needed --nobanner /usr/bin/ss-* \
+    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+    | xargs -r apk info --installed \
+    | sort -u \
     )" && \
     apk add --no-cache --virtual .run-deps $runDeps && \
     apk del .build-deps && \

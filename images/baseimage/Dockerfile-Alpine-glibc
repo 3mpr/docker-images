@@ -1,8 +1,8 @@
-FROM 3mpr/baseimage:latest
+FROM findot/baseimage:latest
 MAINTAINER Florian Indot <florian.indot@gmail.com>
 
 ENV GLIBC_MAJOR_VERSION="2" \
-    GLIBC_MINOR_VERSION="25" \
+    GLIBC_MINOR_VERSION="30" \
     GLIBC_RELEASE="r0"
 ENV GLIBC_PACKAGE="glibc-${GLIBC_MAJOR_VERSION}.${GLIBC_MINOR_VERSION}-${GLIBC_RELEASE}"
 

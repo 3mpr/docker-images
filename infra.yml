@@ -7,7 +7,7 @@ version: '2'
 services:
 
   router:
-    image: 3mpr/nginx-gestalt:latest
+    image: findot/nginx-gestalt:latest
     container_name: router
     hostname: router
     volumes:

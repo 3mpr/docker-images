@@ -1,4 +1,4 @@
-FROM 3mpr/baseimage:alpine-glibc
+FROM findot/baseimage:alpine-glibc
 
 RUN apk add --update --no-cache python3 \
  && mv /usr/bin/python3 /usr/bin/python \

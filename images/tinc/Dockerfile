@@ -1,9 +1,9 @@
-FROM 3mpr/baseimage:latest
-MAINTAINER 3mpr <florian.indot@gmail.com>
+FROM findot/baseimage:latest
+MAINTAINER findot <florian.indot@gmail.com>
 
 RUN set -ex \
- && apk add --update --no-cache tinc rsync \
- && mkdir /etc/tinc
+    && apk add --update --no-cache tinc rsync \
+    && mkdir /etc/tinc
 
 COPY ["entrypoint.sh", "/"]
 COPY ["etc/lightyears", "/tmp/lightyears"]

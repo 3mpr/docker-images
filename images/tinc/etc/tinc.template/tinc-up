@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+ip link set $INTERFACE up
+ip address add 192.168.254.1/24 dev $INTERFACE

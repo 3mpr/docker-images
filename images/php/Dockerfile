@@ -4,23 +4,23 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM 3mpr/baseimage:0.1
+FROM findot/baseimage:0.1
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
-        autoconf \
-        file \
-        g++ \
-        gcc \
-        libc-dev \
-        make \
-        pkgconf \
-        re2c
+    autoconf \
+    file \
+    g++ \
+    gcc \
+    libc-dev \
+    make \
+    pkgconf \
+    re2c
 RUN apk add --no-cache --virtual .persistent-deps \
-        ca-certificates \
-        curl \
-        tar \
-        xz
+    ca-certificates \
+    curl \
+    tar \
+    xz
 
 # ensure www-data user exists
 RUN set -x \
@@ -56,8 +56,8 @@ ENV PHP_SHA256="d815a0c39fd57bab1434a77ff0610fb507c22f790c66cd6f26e27030c4b3e971
 RUN set -xe; \
     \
     apk add --no-cache --virtual .fetch-deps \
-        gnupg \
-        libressl \
+    gnupg \
+    libressl \
     ; \
     \
     mkdir -p /usr/src; \
@@ -66,20 +66,20 @@ RUN set -xe; \
     wget -O php.tar.xz "$PHP_URL"; \
     \
     if [ -n "$PHP_SHA256" ]; then \
-        echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
+    echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
     fi; \
     if [ -n "$PHP_MD5" ]; then \
-        echo "$PHP_MD5 *php.tar.xz" | md5sum -c -; \
+    echo "$PHP_MD5 *php.tar.xz" | md5sum -c -; \
     fi; \
     \
     if [ -n "$PHP_ASC_URL" ]; then \
-        wget -O php.tar.xz.asc "$PHP_ASC_URL"; \
-        export GNUPGHOME="$(mktemp -d)"; \
-        for key in $GPG_KEYS; do \
-            gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-        done; \
-        gpg --batch --verify php.tar.xz.asc php.tar.xz; \
-        rm -r "$GNUPGHOME"; \
+    wget -O php.tar.xz.asc "$PHP_ASC_URL"; \
+    export GNUPGHOME="$(mktemp -d)"; \
+    for key in $GPG_KEYS; do \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+    done; \
+    gpg --batch --verify php.tar.xz.asc php.tar.xz; \
+    rm -r "$GNUPGHOME"; \
     fi; \
     \
     apk del .fetch-deps
@@ -88,37 +88,37 @@ COPY docker-php-source /usr/local/bin/
 
 RUN set -xe \
     && apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        curl-dev \
-        libedit-dev \
-        libxml2-dev \
-        libressl-dev \
-        sqlite-dev \
+    $PHPIZE_DEPS \
+    curl-dev \
+    libedit-dev \
+    libxml2-dev \
+    libressl-dev \
+    sqlite-dev \
     \
     && export CFLAGS="$PHP_CFLAGS" \
-        CPPFLAGS="$PHP_CPPFLAGS" \
-        LDFLAGS="$PHP_LDFLAGS" \
+    CPPFLAGS="$PHP_CPPFLAGS" \
+    LDFLAGS="$PHP_LDFLAGS" \
     && docker-php-source extract \
     && cd /usr/src/php \
     && ./configure \
-        --with-config-file-path="$PHP_INI_DIR" \
-        --with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
-        \
-        --disable-cgi \
-        \
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
-        --enable-ftp \
-# --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
-        --enable-mbstring \
-# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
-        --enable-mysqlnd \
-        \
-        --with-curl \
-        --with-libedit \
-        --with-openssl \
-        --with-zlib \
-        \
-        $PHP_EXTRA_CONFIGURE_ARGS \
+    --with-config-file-path="$PHP_INI_DIR" \
+    --with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
+    \
+    --disable-cgi \
+    \
+    # --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
+    --enable-ftp \
+    # --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
+    --enable-mbstring \
+    # --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
+    --enable-mysqlnd \
+    \
+    --with-curl \
+    --with-libedit \
+    --with-openssl \
+    --with-zlib \
+    \
+    $PHP_EXTRA_CONFIGURE_ARGS \
     && make -j "$(getconf _NPROCESSORS_ONLN)" \
     && make install \
     && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
@@ -126,11 +126,11 @@ RUN set -xe \
     && docker-php-source delete \
     \
     && runDeps="$( \
-        scanelf --needed --nobanner --recursive /usr/local \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | sort -u \
-            | xargs -r apk info --installed \
-            | sort -u \
+    scanelf --needed --nobanner --recursive /usr/local \
+    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+    | sort -u \
+    | xargs -r apk info --installed \
+    | sort -u \
     )" \
     && apk add --no-cache --virtual .php-rundeps $runDeps \
     \

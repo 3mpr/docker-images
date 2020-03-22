@@ -8,76 +8,76 @@ services:
         build:
             context: ./gestalt
             dockerfile: Dockerfile
-        image: 3mpr/nginx-gestalt:latest
+        image: findot/nginx-gestalt:latest
 
     baseimage:
         build:
             context: ./baseimage
             dockerfile: Dockerfile-Alpine
-        image: 3mpr/baseimage:latest
+        image: findot/baseimage:latest
 
     baseimage-glibc:
         build:
             context: ./baseimage
             dockerfile: Dockerfile-Alpine-glibc
-        image: 3mpr/baseimage:glibc-latest
+        image: findot/baseimage:glibc-latest
 
     baseimage-debian:
         build:
             context: ./baseimage
             dockerfile: Dockerfile-Debian
-        image: 3mpr/baseimage:debian-latest
+        image: findot/baseimage:debian-latest
 
     java:
         build: ./java
-        image: 3mpr/java:latest
+        image: findot/java:latest
 
     python:
         build:
             context: ./python
             dockerfile: 3-Dockerfile
-        image: 3mpr/python:3
+        image: findot/python:3
 
     python-glibc-2:
         build:
             context: ./python
             dockerfile: 2.7-glibc-Dockerfile
-        image: 3mpr/python:2.7-glibc
+        image: findot/python:2.7-glibc
 
     web2py:
         build:
             context: ./web2py
             dockerfile: Dockerfile
-        image: 3mpr/web2py:0.1
+        image: findot/web2py:0.1
 
     erldns:
         build: ./erldns
-        image: 3mpr/erldns:latest
+        image: findot/erldns:latest
 
     php:
         build: ./php
-        image: 3mpr/php:latest
+        image: findot/php:latest
 
     nginx-php:
         build: ./nginx-boilerplate
-        image: 3mpr/nginx:php
+        image: findot/nginx:php
 
     laravel-dev:
         build: ./laravel-dev
-        image: 3mpr/laravel-dev:5.4
+        image: findot/laravel-dev:5.4
 
     tinc:
         build: ./tinc
-        image: 3mpr/tinc:latest
+        image: findot/tinc:latest
 
     aoedia:
         build: ./aoedia
-        image: 3mpr/aoedia:latest
+        image: findot/aoedia:latest
 
     ilanga:
         build: ./ilanga
-        image: 3mpr/ilanga:0.0.5
+        image: findot/ilanga:0.0.5
 
     teamspeak:
         build: ./docker-teamspeak
-        image: 3mpr/teamspeak:3.11.0
+        image: findot/teamspeak:3.11.0
