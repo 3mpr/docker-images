@@ -70,14 +70,11 @@ services:
         build: ./tinc
         image: 3mpr/tinc:latest
 
-    aoedia:
-        build: ./aoedia
-        image: 3mpr/aoedia:latest
-
-    ilanga:
-        build: ./ilanga
-        image: 3mpr/ilanga:0.0.5
-
     teamspeak:
         build: ./docker-teamspeak
         image: 3mpr/teamspeak:3.11.0
+    
+    unanimity:
+        build: ./unanimity
+        image: 3mpr/unanimity:0.2.0
+

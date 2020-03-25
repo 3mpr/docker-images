@@ -17,6 +17,27 @@ services:
         ipv4_address: 10.0.10.16
     restart: unless-stopped
 
+  unanimity:
+    image: 3mpr/unanimity:0.2.0
+    container_name: unanimity
+    hostname: unanimity
+    networks:
+      dmz:
+        ipv4_address: 10.0.10.18
+    environment:
+      INTERFACE: ${UNANIMITY_INTERFACE}
+      PORT: ${UNANIMITY_PORT}
+      DB_ADAPTER: ${UNANIMITY_DB_ADAPTER}
+      DB_HOST: ${UNANIMITY_DB_HOST}
+      DB_PORT: ${UNANIMITY_DB_PORT}
+      DB_USER: ${UNANIMITY_DB_USER}
+      DB_PASSWORD: ${UNANIMITY_DB_PASSWORD}
+      DB_DATABASE: ${UNANIMITY_DB_DATABASE}
+      DATABASE_URL: ${UNANIMITY_DB_URL}
+      JWT_SECRET: ${UNANIMITY_JWT_SECRET}
+      ROCKET_ENV: production
+    restart: unless-stopped
+
   registry:
     image: registry:2
     container_name: registry
@@ -33,7 +54,7 @@ services:
       REGISTRY_AUTH_HTPASSWD_PATH: ${REGISTRY_AUTH_HTPASSWD_PATH}
       REGISTRY_HTTP_ADDR: ${REGISTRY_HTTP_ADDR}
     restart: unless-stopped
-
+  
   # ----------------------------------------------------------------------- SAN
 
   mysql:
@@ -66,17 +87,6 @@ services:
     networks:
       san:
         ipv4_address: 10.0.0.17
-    restart: unless-stopped
-
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    hostname: mongo
-    volumes:
-      - ${RUNTIME}/mongo/data:/data/db
-    networks:
-      san:
-        ipv4_address: 10.0.0.18
     restart: unless-stopped
 
   neo4j:
@@ -179,6 +189,7 @@ services:
       - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
       - DRONE_UI_USERNAME=${DRONE_UI_USERNAME}
       - DRONE_UI_PASSWORD=${DRONE_UI_PASSWORD}
+      - DRONE_RUNNER_NETWORKS=${DRONE_RUNNER_NETWORKS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -197,7 +208,6 @@ services:
     networks:
       sandbox:
         ipv4_address: 23.20.2.24
-    restart: unless-stopped
 
   consultations:
     image: oragelac/django:mysql-libjpeg-0.1
