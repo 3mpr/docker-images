@@ -1,4 +1,4 @@
-FROM 3mpr/python:3-glibc
+FROM findot/python:3-glibc
 MAINTAINER oragelac <calegaroantoine@gmail.com>
 
 WORKDIR /tmp

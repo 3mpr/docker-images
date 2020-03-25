@@ -1,4 +1,4 @@
-FROM 3mpr/baseimage:0.1
+FROM findot/baseimage:0.1
 MAINTAINER Florian Indot <florian.indot@gmail.com>
 
 WORKDIR /tmp
@@ -24,17 +24,17 @@ ENV ERL_DEPS \
     erlang-observer
 
 RUN set -x \
- && addgroup -S named \
- && adduser -D -S -G named named
+    && addgroup -S named \
+    && adduser -D -S -G named named
 
 RUN apk add --update --no-cache --virtual build_deps $BUILD_DEPS \
- && apk add --update --no-cache $ERL_DEPS
+    && apk add --update --no-cache $ERL_DEPS
 
 RUN git clone https://github.com/aetrion/erl-dns.git \
- && cd erl-dns \
- && sh build.sh \
- && chown -R named:named /tmp/erl-dns \
- && chmod -R 754 /tmp/erl-dns
+    && cd erl-dns \
+    && sh build.sh \
+    && chown -R named:named /tmp/erl-dns \
+    && chmod -R 754 /tmp/erl-dns
 
 RUN apk del build_deps
 

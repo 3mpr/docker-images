@@ -1,16 +1,16 @@
-FROM 3mpr/php
-MAINTAINER 3mpr <florian.indot@gmail.com>
+FROM findot/php
+MAINTAINER findot <florian.indot@gmail.com>
 
 # Alpine Dependencies & Update ----------------------------------------------- #
 RUN sed -i 's/v3.4/v3.5/g' /etc/apk/repositories \
- && apk update \
- && apk add openssl nodejs
+    && apk update \
+    && apk add openssl nodejs
 # \ -------------------------------------------------------------------------- #
 
 # Composer Installation ------------------------------------------------------ #
 ADD scripts/composer-setup.sh /tmp
 RUN sh /tmp/composer-setup.sh \
- && rm /tmp/composer-setup.sh
+    && rm /tmp/composer-setup.sh
 # \ -------------------------------------------------------------------------- #
 
 WORKDIR /home/www-data

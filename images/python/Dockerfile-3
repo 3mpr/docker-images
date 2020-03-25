@@ -1,6 +1,6 @@
 FROM python:3-alpine3.6
 
-MAINTAINER 3mpr <florian.indot@gmail.com>
+MAINTAINER findot <florian.indot@gmail.com>
 
 ENV DUMB_INIT_VERSION 1.2.0
 

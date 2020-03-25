@@ -5,7 +5,7 @@ services:
   # ----------------------------------------------------------------------- DMZ
 
   web-php:
-    image: 3mpr/nginx:php
+    image: findot/nginx:php
     container_name: web-php
     hostname: web-php
     volumes:
@@ -103,7 +103,7 @@ services:
   # ----------------------------------------------------------------------- VPN
 
   tinc-vpn:
-    image: 3mpr/tinc:latest
+    image: findot/tinc:latest
     container_name: tinc-vpn
     hostname: tinc-vpn
     volumes:
@@ -127,7 +127,7 @@ services:
   # ------------------------------------------------------------------- SANDBOX
 
   teamspeak:
-    image: 3mpr/teamspeak:3.9.1
+    image: findot/teamspeak:3.9.1
     container_name: teamspeak
     hostname: teamspeak
     volumes:
@@ -199,7 +199,7 @@ services:
     depends_on: [ drone-server ]
   
   web2py:
-    image: 3mpr/web2py:0.1
+    image: findot/web2py:0.1
     container_name: web2py
     hostname: web2py
     volumes:

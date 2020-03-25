@@ -1,0 +1,19 @@
+FROM findot/baseimage:latest
+
+MAINTAINER findot <florian.indot@gmail.com>
+
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUSTUP_URL="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-musl/rustup-init"
+
+RUN set -eux \
+ && apk add --no-cache ca-certificates gcc \
+ && wget "$RUSTUP_URL" \
+ && chmod +x rustup-init \
+ && ./rustup-init -y --no-modify-path --default-toolchain nightly \
+ && rm rustup-init \
+ && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+
+VOLUME /usr/src/app
+VOLUME /usr/local/cargo/registry

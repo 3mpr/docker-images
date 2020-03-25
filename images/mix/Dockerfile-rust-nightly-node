@@ -1,0 +1,3 @@
+FROM findot/rust:nightly
+
+RUN apk add --update --no-cache node npm

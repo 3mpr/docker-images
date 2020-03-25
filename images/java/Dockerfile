@@ -1,4 +1,4 @@
-FROM 3mpr/baseimage:glibc-latest
+FROM findot/baseimage:glibc-latest
 MAINTAINER Florian Indot <florian.indot@gmail.com>
 
 ENV JAVA_MAJOR_VERSION="8" \
@@ -14,9 +14,9 @@ ENV DEPS \
 RUN apk add --update --no-cache --virtual deps ${DEPS}
 
 RUN  set -x \
- && mkdir /jre \
- && wget --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_MAJOR_VERSION}u${JAVA_MINOR_VERSION}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_MAJOR_VERSION}u${JAVA_MINOR_VERSION}-linux-x64.tar.gz -O - \
- | gunzip -c - | tar xf - -C /jre --strip-components 1
+    && mkdir /jre \
+    && wget --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/${JAVA_MAJOR_VERSION}u${JAVA_MINOR_VERSION}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_MAJOR_VERSION}u${JAVA_MINOR_VERSION}-linux-x64.tar.gz -O - \
+    | gunzip -c - | tar xf - -C /jre --strip-components 1
 
 RUN apk del deps
 

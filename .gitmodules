@@ -1,0 +1,3 @@
+[submodule "images/docker-teamspeak"]
+	path = images/docker-teamspeak
+	url = https://github.com/findot/docker-teamspeak.git

@@ -1,7 +1,7 @@
 FROM alpine:latest
-MAINTAINER 3mpr <florian.indot@gmail.com>
+MAINTAINER findot <florian.indot@gmail.com>
 
-ENV DUMB_INIT_VERSION 1.2.0
+ENV DUMB_INIT_VERSION 1.2.2
 
 RUN apk add --update --no-cache --virtual .ssl libressl
 # && apk add --update --no-cache su-exec
